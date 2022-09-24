@@ -1,7 +1,7 @@
 const express = require('express');
 const { find, toNumber } = require('lodash');
 const router = express.Router();
-const faker = require('faker');
+const {image, commerce} = require('faker');
 
 const products = [
   {
@@ -44,9 +44,9 @@ router.get('/products', (req, res) => {
   for (let index = 0; index < limit; index++) {
     productss.push({
       id: index+1,
-      name: faker.commerce.productName(),
-      price: toNumber(faker.commerce.price()),
-      image: faker.image.imageUrl(),
+      name: commerce.productName(),
+      price: toNumber(commerce.price()),
+      image: image.imageUrl(),
     })
   }
 
