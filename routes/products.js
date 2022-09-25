@@ -36,7 +36,7 @@ const products = [
   },
 ]
 
-router.get('/products', (req, res) => {
+router.get('/', (req, res) => {
   const productss = [];
 
   const { size } = req.query;
@@ -53,7 +53,7 @@ router.get('/products', (req, res) => {
   res.json(productss);
 });
 
-router.get('/products/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const { id } = req.params;
   if (id) {
     res.json(find(products, {id: toNumber(id)}));

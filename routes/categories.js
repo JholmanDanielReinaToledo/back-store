@@ -47,18 +47,18 @@ const categories = [
   },
 ];
 
-router.get('/categories', (req, res) => {
+router.get('/', (req, res) => {
   res.json(categories);
 });
 
-router.get('/categories/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const { id } = req.params;
   if (id) {
     res.json(find(categories, {id: toNumber(id)}));
   }
 });
 
-router.get('/categories/:id/products', (req, res) => {
+router.get('/:id/products', (req, res) => {
   const { id } = req.params;
   if (find(categories, {id: toNumber(id)}).products) {
     res.json(find(categories, {id: toNumber(id)}).products);
