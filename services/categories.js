@@ -25,7 +25,7 @@ class CategoriesService {
       ...data,
     };
 
-    this.products.push(newCategory);
+    this.categories.push(newCategory);
     return newCategory;
 
   }
@@ -44,7 +44,7 @@ class CategoriesService {
   update(id, changes) {
     const index = findIndex(this.categories, item => item.id === toNumber(id));
     if (index < 0) {
-      throw new Error('Product not found')
+      throw new Error('Category not found')
     } else {
       const product = this.categories[index];
       this.categories[index] = {
