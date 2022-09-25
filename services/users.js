@@ -40,8 +40,19 @@ class UsersServices {
     return false;
   }
 
-  update() {
-
+  update(id, changes) {
+    const index = findIndex(this.users, item => item.id === toNumber(id));
+    if (index < 0) {
+      throw new Error('User not found')
+    } else {
+      const user = this.users[index];
+      this.users[index] = {
+        id,
+        ...user,
+        ...changes
+      };
+      return this.users[index];
+    }
   }
 
   delete(id) {
