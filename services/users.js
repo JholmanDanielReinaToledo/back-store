@@ -1,6 +1,6 @@
 const faker = require('faker');
 const { internet } = require('faker');
-const { toNumber, find } = require('lodash');
+const { toNumber, find, findIndex, max, map } = require('lodash');
 
 class UsersServices {
   constructor() {
@@ -19,8 +19,14 @@ class UsersServices {
     }
   }
 
-  create() {
+  create(data) {
+    const newUser = {
+      id: max(map(this.users, x => x.id)) + 1,
+      ...data,
+    };
 
+    this.users.push(newUser);
+    return newUser;
   }
 
   find() {
@@ -38,8 +44,15 @@ class UsersServices {
 
   }
 
-  delete() {
-
+  delete(id) {
+    const index = findIndex(this.users, item => item.id === toNumber(id));
+    if (index < 0) {
+      throw new Error('User not found')
+    }
+    this.users.splice(index, 1);
+    return {
+      id,
+    }
   }
 }
 

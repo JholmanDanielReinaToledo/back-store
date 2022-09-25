@@ -1,6 +1,6 @@
 const faker = require('faker');
 const { internet } = require('faker');
-const { toNumber, find } = require('lodash');
+const { toNumber, find, max, map, findIndex } = require('lodash');
 
 class CategoriesService {
   constructor() {
@@ -19,7 +19,14 @@ class CategoriesService {
     }
   }
 
-  create() {
+  create(data) {
+    const newCategory = {
+      id: max(map(this.categories, x => x.id)) + 1,
+      ...data,
+    };
+
+    this.products.push(newCategory);
+    return newCategory;
 
   }
 
@@ -34,12 +41,30 @@ class CategoriesService {
     return false;
   }
 
-  update() {
-
+  update(id, changes) {
+    const index = findIndex(this.categories, item => item.id === toNumber(id));
+    if (index < 0) {
+      throw new Error('Product not found')
+    } else {
+      const product = this.categories[index];
+      this.categories[index] = {
+        id,
+        ...product,
+        ...changes
+      };
+      return this.categories[index];
+    }
   }
 
-  delete() {
-
+  delete(id) {
+    const index = findIndex(this.categories, item => item.id === toNumber(id));
+    if (index < 0) {
+      throw new Error('Product not found')
+    }
+    this.categories.splice(index, 1);
+    return {
+      id,
+    }
   }
 }
 
