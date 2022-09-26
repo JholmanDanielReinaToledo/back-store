@@ -1,5 +1,4 @@
 const express = require('express');
-const { find, toNumber } = require('lodash');
 const router = express.Router();
 const CategoriesServices = require('../services/categories');
 
