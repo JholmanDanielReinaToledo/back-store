@@ -19,7 +19,7 @@ class CategoriesService {
     }
   }
 
-  create(data) {
+  async create(data) {
     const newCategory = {
       id: max(map(this.categories, x => x.id)) + 1,
       ...data,
@@ -30,18 +30,18 @@ class CategoriesService {
 
   }
 
-  find() {
+  async find() {
     return this.categories;
   }
 
-  findOne(id) {
+  async findOne(id) {
     if (toNumber(id)) {
       return find(this.categories, item => item.id === toNumber(id));
     }
     return false;
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     const index = findIndex(this.categories, item => item.id === toNumber(id));
     if (index < 0) {
       throw new Error('Category not found')
@@ -56,10 +56,10 @@ class CategoriesService {
     }
   }
 
-  delete(id) {
+  async delete(id) {
     const index = findIndex(this.categories, item => item.id === toNumber(id));
     if (index < 0) {
-      throw new Error('Product not found')
+      throw new Error('Category not found')
     }
     this.categories.splice(index, 1);
     return {

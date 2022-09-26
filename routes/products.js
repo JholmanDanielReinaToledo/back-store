@@ -4,16 +4,16 @@ const ProducServices = require('../services/product')
 
 const serviceProduct = new ProducServices();
 
-router.get('/', (req, res) => {
-  const products = serviceProduct.find();
+router.get('/', async (req, res) => {
+  const products = await serviceProduct.find();
 
   res.json(products);
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
-  const product = serviceProduct.findOne(id);
+  const product = await serviceProduct.findOne(id);
   if (product) {
     res.status(200).json(product);
   } else {
@@ -21,9 +21,9 @@ router.get('/:id', (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const body = req.body;
-  const newProduct = serviceProduct.create(body);
+  const newProduct = await serviceProduct.create(body);
 
   res.status(201).json({
     message: 'created',
@@ -31,23 +31,30 @@ router.post('/', (req, res) => {
   })
 });
 
-router.patch('/:id', (req, res) => {
-  const body = req.body;
-  const {id} = req.params;
+router.patch('/:id', async (req, res) => {
+  try {
+    const body = req.body;
+    const {id} = req.params;
 
-  const updatedProduct = serviceProduct.update(id, body);
+    const updatedProduct = await serviceProduct.update(id, body);
 
-  res.json({
-    message: 'update',
-    data: updatedProduct,
-    id,
-  })
+    res.json({
+      message: 'update',
+      data: updatedProduct,
+      id,
+    })
+
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
-  const rta = serviceProduct.delete(id);
+  const rta = await serviceProduct.delete(id);
 
   res.json(rta)
 });

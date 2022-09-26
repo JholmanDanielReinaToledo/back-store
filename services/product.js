@@ -20,7 +20,7 @@ class ProductServices {
     }
   }
 
-  create(data) {
+  async create(data) {
     const newProduct = {
       id: max(map(this.products, x => x.id)) + 1,
       ...data,
@@ -30,18 +30,18 @@ class ProductServices {
     return newProduct;
   }
 
-  find() {
+  async find() {
     return this.products;
   }
 
-  findOne(id) {
+  async findOne(id) {
     if (toNumber(id)) {
       return find(this.products, item => item.id === toNumber(id));
     }
     return false;
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     const index = findIndex(this.products, item => item.id === toNumber(id));
     if (index < 0) {
       throw new Error('Product not found')
@@ -56,7 +56,7 @@ class ProductServices {
     }
   }
 
-  delete(id) {
+  async delete(id) {
     const index = findIndex(this.products, item => item.id === toNumber(id));
     if (index < 0) {
       throw new Error('Product not found')

@@ -19,7 +19,7 @@ class UsersServices {
     }
   }
 
-  create(data) {
+  async create(data) {
     const newUser = {
       id: max(map(this.users, x => x.id)) + 1,
       ...data,
@@ -29,18 +29,18 @@ class UsersServices {
     return newUser;
   }
 
-  find() {
+  async find() {
     return this.users;
   }
 
-  findOne(id) {
+  async findOne(id) {
     if (toNumber(id)) {
       return find(this.users, item => item.id === toNumber(id));
     }
     return false;
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     const index = findIndex(this.users, item => item.id === toNumber(id));
     if (index < 0) {
       throw new Error('User not found')
@@ -55,7 +55,7 @@ class UsersServices {
     }
   }
 
-  delete(id) {
+  async delete(id) {
     const index = findIndex(this.users, item => item.id === toNumber(id));
     if (index < 0) {
       throw new Error('User not found')
