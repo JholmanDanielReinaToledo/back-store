@@ -4,7 +4,7 @@ function logErrors (err, req, res, next) {
 }
 
 function errorHandler (err, req, res, next) {
-  res.statatus(500).json({
+  res.status(500).json({
     message: err.message,
     stack: err.stack,
   });

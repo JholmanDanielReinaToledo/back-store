@@ -4,10 +4,14 @@ const ProducServices = require('../services/product')
 
 const serviceProduct = new ProducServices();
 
-router.get('/', async (req, res) => {
-  const products = await serviceProduct.find();
+router.get('/', async (req, res, next) => {
+  try {
+    const products = await serviceProduct.find();
 
-  res.json(products);
+    res.json(products);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get('/:id', async (req, res, next) => {
@@ -20,17 +24,22 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res) => {
-  const body = req.body;
-  const newProduct = await serviceProduct.create(body);
+router.post('/', async (req, res, next) => {
 
-  res.status(201).json({
-    message: 'created',
-    data: newProduct,
-  })
+  try {
+    const body = req.body;
+    const newProduct = await serviceProduct.create(body);
+
+    res.status(201).json({
+      message: 'created',
+      data: newProduct,
+    })
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
   try {
     const body = req.body;
     const {id} = req.params;
@@ -42,20 +51,21 @@ router.patch('/:id', async (req, res) => {
       data: updatedProduct,
       id,
     })
-
   } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
+    next(error);
   }
 });
 
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  const rta = await serviceProduct.delete(id);
+    const rta = await serviceProduct.delete(id);
 
-  res.json(rta)
+    res.json(rta)
+  } catch (error) {
+    next(error);
+  }
 });
 
 

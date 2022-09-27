@@ -1,7 +1,7 @@
 const faker = require('faker');
 const { internet } = require('faker');
 const { toNumber, find, max, map, findIndex } = require('lodash');
-
+const boom = require('@hapi/boom');
 class CategoriesService {
   constructor() {
     this.categories = [];
@@ -35,10 +35,11 @@ class CategoriesService {
   }
 
   async findOne(id) {
-    if (toNumber(id)) {
-      return find(this.categories, item => item.id === toNumber(id));
+    const category =  find(this.categories, item => item.id === toNumber(id));
+    if (!category) {
+      throw boom.notFound('Category not found');
     }
-    return false;
+    return category;
   }
 
   async update(id, changes) {

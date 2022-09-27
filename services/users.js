@@ -35,10 +35,11 @@ class UsersServices {
   }
 
   async findOne(id) {
-    if (toNumber(id)) {
-      return find(this.users, item => item.id === toNumber(id));
+    const user = find(this.users, item => item.id === toNumber(id));
+    if (!user) {
+      throw boom.notFound('User not found');
     }
-    return false;
+    return user;
   }
 
   async update(id, changes) {
