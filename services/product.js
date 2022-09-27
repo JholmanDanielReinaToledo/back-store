@@ -1,5 +1,6 @@
 const {image, commerce} = require('faker');
 const { toNumber, find, max, map, findIndex } = require('lodash');
+const boom = require('@hapi/boom');
 
 class ProductServices {
 
@@ -35,16 +36,19 @@ class ProductServices {
   }
 
   async findOne(id) {
-    if (toNumber(id)) {
-      return find(this.products, item => item.id === toNumber(id));
+    const name = this.getTotal();
+
+    const product = find(this.products, item => item.id === toNumber(id));
+    if (!product) {
+      throw boom.notFound('Product not found');
     }
-    return false;
+    return product;
   }
 
   async update(id, changes) {
     const index = findIndex(this.products, item => item.id === toNumber(id));
     if (index < 0) {
-      throw new Error('Product not found')
+      throw boom.notFound('Product not found');
     } else {
       const product = this.products[index];
       this.products[index] = {
@@ -59,7 +63,7 @@ class ProductServices {
   async delete(id) {
     const index = findIndex(this.products, item => item.id === toNumber(id));
     if (index < 0) {
-      throw new Error('Product not found')
+      throw boom.notFound('Product not found');
     }
     this.products.splice(index, 1);
     return {

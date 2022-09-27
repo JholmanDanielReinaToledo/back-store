@@ -1,6 +1,7 @@
 const faker = require('faker');
 const { internet } = require('faker');
 const { toNumber, find, findIndex, max, map } = require('lodash');
+const boom = require('@hapi/boom');
 
 class UsersServices {
   constructor() {

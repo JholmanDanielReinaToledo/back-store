@@ -10,14 +10,13 @@ router.get('/', async (req, res) => {
   res.json(products);
 });
 
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-
-  const product = await serviceProduct.findOne(id);
-  if (product) {
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await serviceProduct.findOne(id);
     res.status(200).json(product);
-  } else {
-    res.status(400).send()
+  } catch (error) {
+    next(error);
   }
 });
 

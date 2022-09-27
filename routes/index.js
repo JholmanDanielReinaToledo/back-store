@@ -2,6 +2,8 @@ const express = require('express');
 const products = require('./products')
 const categories = require('./categories')
 const users = require('./users')
+require("express-async-errors");
+
 
 const setRoutes = (app) => {
   const router = express.Router();
