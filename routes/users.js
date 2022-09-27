@@ -4,34 +4,41 @@ const UsersServices = require('../services/users');
 
 const usersServices = new UsersServices();
 
-router.get('/', (req, res) => {
-  const users = usersServices.find();
-
-  res.status(200).json(users);
+router.get('/', async (req, res, next) => {
+  try {
+    const users = await usersServices.find();
+    res.status(200).json(users);
+  } catch (error) {
+    next(error)
+  }
 })
 
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  const user = await usersServices.findOne(id);
-  if (user) {
+    const user = await usersServices.findOne(id);
     res.status(200).json(user);
-  } else {
-    res.status(400).send()
+  } catch (error) {
+    next(error);
   }
 });
 
-router.post('/', async (req, res) => {
-  const body = req.body;
-  const newUser = await usersServices.create(body);
+router.post('/', async (req, res, next) => {
+  try {
+    const body = req.body;
+    const newUser = await usersServices.create(body);
 
-  res.status(201).json({
-    message: 'created',
-    data: newUser,
-  })
+    res.status(201).json({
+      message: 'created',
+      data: newUser,
+    })
+  } catch (error) {
+    next(error)
+  }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
   try {
     const body = req.body;
     const {id} = req.params;
@@ -45,18 +52,21 @@ router.patch('/:id', async (req, res) => {
     })
 
   } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
+    next(error)
   }
 });
 
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  const rta = await usersServices.delete(id);
+    const rta = await usersServices.delete(id);
 
-  res.json(rta)
+    res.json(rta)
+  } catch (error) {
+    next(error)
+  }
+
 });
 
 

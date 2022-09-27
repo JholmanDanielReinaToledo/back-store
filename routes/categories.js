@@ -4,35 +4,42 @@ const CategoriesServices = require('../services/categories');
 
 const categoriesServices = new CategoriesServices();
 
-router.get('/', (req, res) => {
-  const categories = categoriesServices.find();
+router.get('/', async (req, res, next) => {
+  try {
+    const categories = await categoriesServices.find();
 
-  res.status(200).json(categories);
+    res.status(200).json(categories);
+  } catch (error) {
+    next(error)
+  }
 })
 
 
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-
-  const category = await categoriesServices.findOne(id);
-  if (category) {
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const category = await categoriesServices.findOne(id);
     res.status(200).json(category);
-  } else {
-    res.status(400).send()
+  } catch (error) {
+    next(error);
   }
 });
 
-router.post('/', async (req, res) => {
-  const body = req.body;
-  const newCategory = await categoriesServices.create(body);
+router.post('/', async (req, res, next) => {
+  try {
+    const body = req.body;
+    const newCategory = await categoriesServices.create(body);
 
-  res.status(201).json({
-    message: 'created',
-    data: newCategory,
-  })
+    res.status(201).json({
+      message: 'created',
+      data: newCategory,
+    })
+  } catch (error) {
+    next(error)
+  }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
   try {
     const body = req.body;
     const {id} = req.params;
@@ -46,19 +53,19 @@ router.patch('/:id', async (req, res) => {
     })
 
   } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
+    next(error)
   }
 });
 
 
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
-
-  const rta = await categoriesServices.delete(id);
-
-  res.json(rta)
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const rta = await categoriesServices.delete(id);
+    res.json(rta)
+  } catch (error) {
+    next(error)
+  }
 });
 
 
