@@ -1,6 +1,6 @@
 const express = require('express');
 const setRoutes = require('./routes')
-const { logErrors, errorHandler } = require('./middelwares/error.handler')
+const { logErrors, errorHandler, boomErrorHandler } = require('./middelwares/error.handler')
 require("express-async-errors");
 
 
@@ -13,6 +13,7 @@ app.use(express.json());
 setRoutes(app)
 
 app.use(logErrors)
+app.use(boomErrorHandler)
 app.use(errorHandler)
 
 app.listen(PORT, () => {
