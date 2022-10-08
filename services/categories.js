@@ -45,7 +45,7 @@ class CategoriesService {
   async update(id, changes) {
     const index = findIndex(this.categories, item => item.id === toNumber(id));
     if (index < 0) {
-      throw new Error('Category not found')
+      throw boom.notFound('Category not found');
     } else {
       const product = this.categories[index];
       this.categories[index] = {
@@ -60,7 +60,7 @@ class CategoriesService {
   async delete(id) {
     const index = findIndex(this.categories, item => item.id === toNumber(id));
     if (index < 0) {
-      throw new Error('Category not found')
+      throw boom.notFound('Category not found');
     }
     this.categories.splice(index, 1);
     return {

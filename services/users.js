@@ -45,7 +45,7 @@ class UsersServices {
   async update(id, changes) {
     const index = findIndex(this.users, item => item.id === toNumber(id));
     if (index < 0) {
-      throw new Error('User not found')
+      throw boom.notFound('User not found');
     } else {
       const user = this.users[index];
       this.users[index] = {
@@ -60,7 +60,7 @@ class UsersServices {
   async delete(id) {
     const index = findIndex(this.users, item => item.id === toNumber(id));
     if (index < 0) {
-      throw new Error('User not found')
+      throw boom.notFound('User not found');
     }
     this.users.splice(index, 1);
     return {
